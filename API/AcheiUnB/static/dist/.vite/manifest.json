@@ -1,0 +1,43 @@
+{
+  "index.html": {
+    "file": "js/index-DnGNr4YP.js",
+    "name": "index",
+    "src": "index.html",
+    "isEntry": true,
+    "css": [
+      "assets/index-B8Uo463z.css"
+    ],
+    "assets": [
+      "assets/carteira-Dk-44drH.png",
+      "assets/bone-DE10Yqga.png",
+      "assets/caneta-CQ7HO7XX.png",
+      "assets/gloss-CzT_QGW8.png",
+      "assets/sombrinha-B7Nq8G48.png",
+      "assets/Favicon-DZaE_dAz.png"
+    ]
+  },
+  "src/assets/icons/Favicon.png": {
+    "file": "assets/Favicon-DZaE_dAz.png",
+    "src": "src/assets/icons/Favicon.png"
+  },
+  "src/assets/images/bone.png": {
+    "file": "assets/bone-DE10Yqga.png",
+    "src": "src/assets/images/bone.png"
+  },
+  "src/assets/images/caneta.png": {
+    "file": "assets/caneta-CQ7HO7XX.png",
+    "src": "src/assets/images/caneta.png"
+  },
+  "src/assets/images/carteira.png": {
+    "file": "assets/carteira-Dk-44drH.png",
+    "src": "src/assets/images/carteira.png"
+  },
+  "src/assets/images/gloss.png": {
+    "file": "assets/gloss-CzT_QGW8.png",
+    "src": "src/assets/images/gloss.png"
+  },
+  "src/assets/images/sombrinha.png": {
+    "file": "assets/sombrinha-B7Nq8G48.png",
+    "src": "src/assets/images/sombrinha.png"
+  }
+}

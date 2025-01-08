@@ -19,6 +19,7 @@ export default defineConfig({
   base: "static/dist/",
   build: {
     outDir: path.resolve(__dirname, "../API/AcheiUnB/static/dist"),
+    manifest: true,
     emptyOutDir: true,
     assetsDir: "static/dist/assets", // Pasta onde as imagens e outros arquivos estáticos serão armazenados
 
