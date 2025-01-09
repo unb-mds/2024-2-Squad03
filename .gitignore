@@ -6,7 +6,7 @@ __pycache__/
 secrets.env
 API/media/
 API/AcheiUnB/__pycache__/
-API/users/__pycache__/
+API/users/__pycache__
 API/chat/__pycache__/
 API/chat/migrations/__pycache__
 API/AcheiUnB/__pycache__/__init__.cpython-312.pyc
