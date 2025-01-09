@@ -5,3 +5,7 @@ __pycache__
 __pycache__/
 secrets.env
 API/media/
+API/AcheiUnB/__pycache__/
+API/users/__pycache__/
+API/chat/__pycache__/
+API/chat/migrations/__pycache__
