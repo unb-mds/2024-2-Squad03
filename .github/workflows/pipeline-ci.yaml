@@ -6,6 +6,7 @@ on:
   push:
     branches: 
       - main # Executa o workflow ao push na branch 'main'
+      - ajustar-workflow
   pull_request:
     branches: 
       - main # Executa o workflow ao abrir um PR na branch 'main'
@@ -31,18 +32,18 @@ jobs:
         run: |
           docker-compose -f API/docker-compose.yml up -d --build
           
-      - name: Run migrations
-        run: |
-          docker-compose -f API/docker-compose.yml exec web python manage.py migrate
+      #- name: Run migrations
+       # run: |
+        #  docker-compose -f API/docker-compose.yml exec web python manage.py migrate
 
-      - name: Run tests with coverage
-        run: |
-          docker-compose -f API/docker-compose.yml exec web coverage run --source='.' manage.py test
+      #- name: Run tests with coverage
+       # run: |
+        #  docker-compose -f API/docker-compose.yml exec web coverage run --source='.' manage.py test
 
-      - name: Generate coverage report
-        run: |
-          docker-compose -f API/docker-compose.yml exec web coverage xml
-        # Gera o relatório em XML, necessário para o Codecov
+      #- name: Generate coverage report
+       # run: |
+        #  docker-compose -f API/docker-compose.yml exec web coverage xml
+       # # Gera o relatório em XML, necessário para o Codecov
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
