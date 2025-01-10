@@ -32,13 +32,13 @@ jobs:
         run: |
           docker-compose -f API/docker-compose.yml up -d --build
           
-      - name: Run migrations
-        run: |
-          docker-compose -f API/docker-compose.yml exec -T web python manage.py migrate
-
-      #- name: Run tests with coverage
+      #- name: Run migrations
        # run: |
-        #  docker-compose -f API/docker-compose.yml exec web coverage run --source='.' manage.py test
+        #  docker-compose -f API/docker-compose.yml exec -T web python manage.py migrate
+
+      - name: Run tests with coverage
+        run: |
+          docker-compose -f API/docker-compose.yml exec web coverage run --source='.' manage.py test
 
       #- name: Generate coverage report
        # run: |
