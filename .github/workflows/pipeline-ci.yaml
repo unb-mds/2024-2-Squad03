@@ -32,9 +32,9 @@ jobs:
         run: |
           docker-compose -f API/docker-compose.yml up -d --build
           
-      #- name: Run migrations
-       # run: |
-        #  docker-compose -f API/docker-compose.yml exec web python manage.py migrate
+      - name: Run migrations
+        run: |
+          docker-compose -f API/docker-compose.yml exec web python manage.py migrate
 
       #- name: Run tests with coverage
        # run: |
@@ -56,4 +56,4 @@ jobs:
       - name: Tear down Docker Compose
         if: always()
         run: |
-          docker-compose down
+          docker-compose -f API/docker-compose.yml down
