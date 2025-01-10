@@ -34,7 +34,7 @@ jobs:
           
       - name: Run migrations
         run: |
-          docker-compose -f API/docker-compose.yml exec web python manage.py migrate
+          docker-compose -f API/docker-compose.yml exec -T web python manage.py migrate
 
       #- name: Run tests with coverage
        # run: |
