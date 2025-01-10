@@ -38,7 +38,7 @@ jobs:
 
       - name: Run tests with coverage
         run: |
-          docker-compose -f API/docker-compose.yml exec web coverage run --source='.' manage.py test
+          docker-compose -f API/docker-compose.yml exec -T web coverage run --source='.' manage.py test
 
       #- name: Generate coverage report
        # run: |
