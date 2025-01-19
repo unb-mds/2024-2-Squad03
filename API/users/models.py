@@ -79,6 +79,12 @@ class Item(models.Model):
         brand_id = self.brand.brand_id if self.brand else "00"
         return f"{category_id}{location_id}{color_id}{brand_id}"
 
+    def delete_with_related_chats(self):
+        from chat.models import ChatRoom
+
+        ChatRoom.objects.filter(item=self).delete()
+        self.delete()
+
     def __str__(self):
         return f"{self.name} ({self.location})"
 
