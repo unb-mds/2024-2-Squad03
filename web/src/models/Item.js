@@ -5,12 +5,11 @@ export default class Item {
     category = "",
     location = "",
     color = "",
-    foundLostDate = "",
+    found_lost_date = "",
     brand = "",
     description = null,
     images = null,
     status = "",
-    createdAt = new Date(),
     barcode = "",
     requiredFields = ["name", "category", "location"]
   ) {
@@ -23,8 +22,7 @@ export default class Item {
     this.description = description;
     this.images = images;
     this.status = status;
-    this.foundLostDate = foundLostDate;
-    this.createdAt = createdAt;
+    this.found_lost_date = found_lost_date;
     this.barcode = barcode;
     this.requiredFields = requiredFields;
   }

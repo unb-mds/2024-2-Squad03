@@ -169,17 +169,17 @@
       <!-- Data -->
       <div class="mb-4 col-span-2">
         <label
-          for="foundLostDate"
+          for="foundDate"
           class="font-inter block text-azul text-sm font-bold mb-2"
           >Data em que foi achado</label
         >
         <input
-          id="foundLostDate"
+          id="foundDate"
           class="appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
-          :class="item.foundLostDate === '' ? 'text-gray-400' : 'text-gray-700'"
-          v-model="item.foundLostDate"
+          :class="item.foundDate === '' ? 'text-gray-400' : 'text-gray-700'"
+          v-model="item.foundDate"
           type="date"
-          name="foundLostDate"
+          name="foundDate"
         />
       </div>
 
@@ -303,6 +303,7 @@ export default {
     return {
       item: new Item(),
       foundTime: "",
+      foundDate: "",
       previews: [],
       submitError: false,
       formSubmitted: false,
@@ -371,12 +372,12 @@ export default {
         return;
       }
 
-      if (form.foundLostDate) {
-        this.setFoundLostDate();
+      if (this.item.foundDate) {
+        const formattedFoundLostDate = this.formatFoundLostDate();
+        form.setFieldValue("found_lost_date", formattedFoundLostDate);
       }
 
       const formData = form.toFormData();
-      console.log(process.env.VUE_APP_BASE_URL);
       try {
         await api.post("/items/", formData);
         this.formSubmitted = true;
@@ -407,18 +408,20 @@ export default {
       });
     },
 
-    setFoundLostDate() {
-      const [day, month, year] = this.item.foundLostDate.split("-").map(Number);
+    formatFoundLostDate() {
+      const [year, month, day] = this.item.foundDate.split("-").map(Number);
 
-      const [hours, minutes] = this.lostTime.split(":").map(Number);
+      const [hours, minutes] = this.foundTime?.split(":").map(Number);
 
-      this.item.foundLostDate = new Date(
-        year,
-        month - 1,
-        day,
-        hours ?? 0,
-        minutes ?? 0
-      );
+      const date = new Date(year, month - 1, day, hours ?? 0, minutes ?? 0);
+
+      const timezoneOffset = date.getTimezoneOffset();
+      const sign = timezoneOffset > 0 ? "-" : "+";
+      const offset = Math.abs(timezoneOffset);
+      const offsetHours = String(Math.floor(offset / 60)).padStart(2, "0");
+      const offsetMinutes = String(offset % 60).padStart(2, "0");
+
+      return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}T${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}:${String(date.getSeconds()).padStart(2, "0")}${sign}${offsetHours}${offsetMinutes}`;
     },
 
     removeImage(index) {
