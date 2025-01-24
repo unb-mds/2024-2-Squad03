@@ -7,8 +7,8 @@ import RegisterLost from "../views/Register-Lost.vue";
 import RegisterFound from "../views/Register-Found.vue";
 import User from "../views/User.vue";
 import Chats from "../views/Chats.vue";
-import ListItem from "../views/ListItem.vue"
-
+import ListItem from "../views/ListItem.vue";
+import UserItems from "../views/UserItems.vue";
 
 const routes = [
   {
@@ -56,6 +56,11 @@ const routes = [
     name: "ListItem",
     component: ListItem,
   },
+  {
+    path: "/user-items",
+    name: "UserItems",
+    component: UserItems,
+  }
 ];
 
 const router = createRouter({
