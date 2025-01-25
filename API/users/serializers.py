@@ -1,7 +1,7 @@
-import cloudinary.uploader
 from rest_framework import serializers
 
 from .models import Brand, Category, Color, Item, ItemImage, Location
+from .tasks import remove_images_from_item, upload_images_to_cloudinary
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -76,7 +76,7 @@ class ItemSerializer(serializers.ModelSerializer):
             "images",  # Para retornar imagens associadas ao item
             "remove_images",  # Para remover imagens associadas ao item
             "image_urls",
-            "image_ids"  # Para fazer upload de imagens
+            "image_ids",  # Para fazer upload de imagens
         ]
 
     def validate_images(self, value):
@@ -88,7 +88,7 @@ class ItemSerializer(serializers.ModelSerializer):
         return value
 
     def create(self, validated_data):
-        # Extrai as imagens
+        # Extrai as imagens e remove do payload
         images = validated_data.pop("images", [])
         MAX_IMAGES = 2
 
@@ -96,19 +96,13 @@ class ItemSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(
                 f"Você pode adicionar no máximo {MAX_IMAGES} imagens."
             )
+
+        # Cria o item imediatamente
         item = super().create(validated_data)
 
-        for image in images:
-            if item.images.count() >= MAX_IMAGES:
-                raise serializers.ValidationError(
-                    f"O item já possui o número máximo de {MAX_IMAGES} imagens."
-                )
-            try:
-                upload_result = cloudinary.uploader.upload(image)
-                image_url = upload_result.get("secure_url")
-                ItemImage.objects.create(item=item, image_url=image_url)
-            except Exception as e:
-                raise serializers.ValidationError({"images": str(e)})
+        # Agenda o upload das imagens como uma task assíncrona
+        if images:
+            upload_images_to_cloudinary.delay(item.id, [image.file.read() for image in images])
 
         return item
 
@@ -116,7 +110,8 @@ class ItemSerializer(serializers.ModelSerializer):
         # Remover imagens existentes
         remove_images = validated_data.pop("remove_images", [])
         if remove_images:
-            ItemImage.objects.filter(id__in=remove_images, item=instance).delete()
+            # Agendar a remoção de imagens como uma task assíncrona
+            remove_images_from_item.delay(remove_images)
 
         # Adicionar novas imagens
         images = validated_data.pop("images", [])
@@ -127,13 +122,11 @@ class ItemSerializer(serializers.ModelSerializer):
                 f"Você pode adicionar no máximo {MAX_IMAGES} imagens."
             )
 
-        for image in images:
-            try:
-                upload_result = cloudinary.uploader.upload(image)
-                image_url = upload_result.get("secure_url")
-                ItemImage.objects.create(item=instance, image_url=image_url)
-            except Exception as e:
-                raise serializers.ValidationError({"images": str(e)})
+        if images:
+            # Agendar o upload das novas imagens como uma task assíncrona
+            upload_images_to_cloudinary.delay(
+                instance.id, [image.file.read() for image in images]
+            )
 
         # Atualizar outros campos
         return super().update(instance, validated_data)
@@ -152,6 +145,6 @@ class ItemSerializer(serializers.ModelSerializer):
 
     def get_image_urls(self, obj):
         return [image.image_url for image in obj.images.all()]
-    
+
     def get_image_ids(self, obj):
         return [image.id for image in obj.images.all()]

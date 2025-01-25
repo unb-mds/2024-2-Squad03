@@ -19,7 +19,6 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .filters import ItemFilter
-from .match import find_and_notify_matches
 from .models import Brand, Category, Color, Item, ItemImage, Location, UserProfile
 from .serializers import (
     BrandSerializer,
@@ -29,6 +28,7 @@ from .serializers import (
     ItemSerializer,
     LocationSerializer,
 )
+from .tasks import find_and_notify_matches_task
 
 # Configurações do MSAL
 CLIENT_ID = os.getenv("MICROSOFT_CLIENT_ID")
@@ -52,40 +52,47 @@ class ItemViewSet(ModelViewSet):
 
     ordering_fields = ["created_at", "found_lost_date"]
 
+    def schedule_match_task(self, item):
+        find_and_notify_matches_task.apply_async((item.id,), countdown=10)
+
     def perform_create(self, serializer):
         item = serializer.save(
             user=self.request.user if self.request.user.is_authenticated else None
         )
-
-        find_and_notify_matches(item)
+        self.schedule_match_task(item)
 
     def perform_update(self, serializer):
-        serializer.save()
+        item = serializer.save(
+            user=self.request.user if self.request.user.is_authenticated else None
+        )
+        self.schedule_match_task(item)
 
 
-class MatchItemViewSet(APIView):
-    permission_classes = [IsAuthenticated]
+# Match de itens caso o usuário queira ver os possíveis matches pelo site:
 
-    def get(self, request, item_id):
-        # retorna possiveis matches
-        try:
-            target_item = Item.objects.get(id=item_id, user=request.user)
-        except Item.DoesNotExist:
-            return Response({"error": "Item não encontrado."}, status=404)
+# class MatchItemViewSet(APIView):
+#     permission_classes = [IsAuthenticated]
 
-        matches = find_and_notify_matches(target_item)
-        data = [
-            {
-                "id": match.id,
-                "barcode": match.barcode,
-                "status": match.status,
-                "name": match.name,
-                "description": match.description,
-            }
-            for match in matches
-        ]
+#     def get(self, request, item_id):
+#         # retorna possiveis matches
+#         try:
+#             target_item = Item.objects.get(id=item_id, user=request.user)
+#         except Item.DoesNotExist:
+#             return Response({"error": "Item não encontrado."}, status=404)
 
-        return Response(data, status=200)
+#         matches = find_and_notify_matches(target_item)
+#         data = [
+#             {
+#                 "id": match.id,
+#                 "barcode": match.barcode,
+#                 "status": match.status,
+#                 "name": match.name,
+#                 "description": match.description,
+#             }
+#             for match in matches
+#         ]
+
+#         return Response(data, status=200)
 
 
 class CategoryViewSet(ModelViewSet):
@@ -132,7 +139,7 @@ class ItemImageViewSet(ModelViewSet):
             return Response({"error": "Item not found"}, status=status.HTTP_404_NOT_FOUND)
 
         MAX_IMAGES = 2
-        
+
         if item.images.count() >= MAX_IMAGES:
             return Response(
                 {"error": f"Você pode adicionar no máximo {MAX_IMAGES} imagens por item."},

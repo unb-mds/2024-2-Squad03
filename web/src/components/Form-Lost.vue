@@ -361,7 +361,7 @@ export default {
     },
 
     async save() {
-      this.item.status = "found";
+      this.item.status = "lost";
 
       const form = new Form(this.item);
 
@@ -382,7 +382,7 @@ export default {
         this.formSubmitted = true;
 
         setTimeout(() => {
-          window.location.replace(`http://localhost:8000/#/found`);
+          window.location.replace(`http://localhost:8000/#/lost`);
         }, 2000);
       } catch (error) {
         this.alertMessage = "Erro ao publicar item.";

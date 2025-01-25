@@ -8,4 +8,3 @@ class UsersConfig(AppConfig):
     def ready(self):
         # Importe os sinais dentro do método ready
         import users.signals  # Certifique-se de que o arquivo signals.py existe e está configurado
-

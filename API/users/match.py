@@ -1,7 +1,6 @@
 from django.db.models import Q
 
 from .models import Item
-from .utils import send_match_notification
 
 
 def hamming_distance(barcode1: str, barcode2: str) -> int:
@@ -10,6 +9,8 @@ def hamming_distance(barcode1: str, barcode2: str) -> int:
 
 
 def find_and_notify_matches(target_item: Item, max_distance=2):
+    from .tasks import send_match_notification
+
     """encontra possiveis matches para o item fornecido"""
 
     # Filtrar itens de status oposto a mesma categoria
@@ -41,7 +42,7 @@ def find_and_notify_matches(target_item: Item, max_distance=2):
             for match in matches
         ]
 
-        send_match_notification(
+        send_match_notification.delay(
             to_email=target_item.user.email,
             item_name=target_item.name,
             matches=match_data,
