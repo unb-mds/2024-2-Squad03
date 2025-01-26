@@ -43,9 +43,10 @@
 </template>
 
 <script setup>
+import { onMounted } from "vue";
 import Logo from "../components/Logo.vue";
 
-window.addEventListener("load", () => {
+onMounted(() => {
   const transitionScreen = document.getElementById("transition-screen");
   const mainContent = document.getElementById("main-content");
 

@@ -52,7 +52,7 @@ import ButtonAdd from "../components/Button-Add-Found.vue";
 import SearchHeader from "../components/Search-Header.vue";
 import SubMenu from "../components/Sub-Menu-Found.vue";
 import { ref, onMounted } from 'vue';
-import { fetchFoundItems } from '@/services/apiItems';
+import { fetchFoundItems } from '@/services/item-api';
 import { formatTime } from '@/utils/dateUtils';
 import NotAvailableImage from '@/assets/images/not-available.png';
 

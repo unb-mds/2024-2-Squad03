@@ -294,8 +294,11 @@
 <script>
 import Form from "../models/Form";
 import Item from "../models/Item";
-import Alert from "./Alert.vue";
-import api from "../services/api";
+import { fetchCategories } from "@/services/category-api";
+import { fetchLocations } from "@/services/location-api";
+import { fetchColors } from "@/services/color-api";
+import { fetchBrands } from "@/services/brand-api";
+import { saveItem } from "@/services/item-api";
 
 export default {
   name: "FormComponent",
@@ -327,8 +330,7 @@ export default {
 
     async initializeCategories() {
       try {
-        const result = await api.get("/categories/");
-        this.categories = result.data.results;
+        this.categories = await fetchCategories();
       } catch {
         console.log("Erro ao carregar categorias");
       }
@@ -336,8 +338,7 @@ export default {
 
     async initializeLocations() {
       try {
-        const result = await api.get("/locations/");
-        this.locations = result.data.results;
+        this.locations = await fetchLocations();
       } catch {
         console.log("Erro ao carregar locais");
       }
@@ -345,8 +346,7 @@ export default {
 
     async initializeColors() {
       try {
-        const result = await api.get("/colors/");
-        this.colors = result.data.results;
+        this.colors = await fetchColors();
       } catch {
         console.log("Erro ao carregar cores");
       }
@@ -354,8 +354,7 @@ export default {
 
     async initializeBrands() {
       try {
-        const result = await api.get("/brands/");
-        this.brands = result.data.results;
+        this.brands = await fetchBrands();
       } catch {
         console.log("Erro ao carregar marcas");
       }
@@ -379,7 +378,7 @@ export default {
 
       const formData = form.toFormData();
       try {
-        await api.post("/items/", formData);
+        await saveItem(formData);
         this.formSubmitted = true;
 
         setTimeout(() => {

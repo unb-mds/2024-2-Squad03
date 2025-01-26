@@ -7,8 +7,8 @@ import RegisterLost from "../views/Register-Lost.vue";
 import RegisterFound from "../views/Register-Found.vue";
 import User from "../views/User.vue";
 import Chats from "../views/Chats.vue";
-import ListItem from "../views/ListItem.vue";
-import api from "@/services/api";
+import ListItem from "../views/List-Item.vue";
+import { validateToken } from "@/services/auth-api";
 
 const routes = [
   {
@@ -75,9 +75,7 @@ const router = createRouter({
 router.beforeEach(async (to) => {
   if (to.meta.requiresAuth) {
     try {
-      await api.get("/auth/validate", {
-        withCredentials: true,
-      });
+      await validateToken();
       return true;
     } catch {
       return { name: "Login" };
