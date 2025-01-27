@@ -1,5 +1,6 @@
 <template>
   <!-- Header fixo no topo -->
+
   <div class="fixed w-full top-0" style="z-index: 1">
     <ItemHeader
       :title="itemStatus === 'found' ? 'Item Achado' : 'Item Perdido'"
@@ -74,7 +75,7 @@
 import { ref, onMounted } from "vue";
 import ItemHeader from "../components/Item-Header.vue";
 import MainMenu from "../components/Main-Menu.vue";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { fetchOneLocation } from "@/services/location-api";
 import { fetchOneColor } from "@/services/color-api";
 
@@ -82,12 +83,14 @@ const item = ref(null);
 const itemStatus = ref("");
 const locationName = ref("");
 const labels = ref([]);
+const route = useRoute();
 const router = useRouter();
+const idItem = route.query.idItem;
 
 async function fetchItem() {
   try {
     // Busca o item pelo ID
-    const response = await fetchItem(1);
+    const response = await api.get(`/items/${idItem}`); // Substitua "1" pelo ID dinâmico do item
     item.value = response.data;
 
     // Determina o status do item (achado ou perdido)
@@ -135,6 +138,11 @@ async function fetchItem() {
 }
 
 function viewMatches() {
+  alert(
+    itemStatus.value === "found"
+      ? "Exibindo possíveis matches!"
+      : "Reportando possível match!"
+  );
   alert(
     itemStatus.value === "found"
       ? "Exibindo possíveis matches!"

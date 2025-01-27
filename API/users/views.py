@@ -138,6 +138,37 @@ class ItemViewSet(ModelViewSet):
 #         return Response(data, status=200)
 
 
+class MyItemsLostView(APIView):
+    """
+    listar os itens do usuário dividos em 'lost' e 'found'.
+    """
+
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+
+        # Filtrar itens do usuário por status
+        lost_items = Item.objects.filter(user=user, status="lost")
+
+        # Serializar os itens
+        serializer = ItemSerializer(lost_items, many=True)
+
+        return Response(serializer.data)
+
+
+class MyItemsFoundView(APIView):
+    """
+    listar os itens do usuário 'found'
+    """
+
+    def get(self, request):
+        user = request.user
+        found_items = Item.objects.filter(user=user, status="found")
+        serializer = ItemSerializer(found_items, many=True)
+        return Response(serializer.data)
+
+
 class CategoryViewSet(ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer

@@ -28,10 +28,11 @@
       </svg>
     </button>
     <input
+      v-model="filtersState.searchQuery"
       class="input bg-gray-200 rounded-full px-10 py-2 my-1 border-2 border-transparent focus:outline-none focus:border-laranja placeholder-gray-500 text-gray-700 transition-all duration-300 shadow-md pr-10 w-full z-40"
       placeholder="Pesquise seu item"
-      required
       type="text"
+      @input="setSearchQuery(filtersState.searchQuery)"
       @focus="isActive = true"
       @blur="isActive = false; showFilters = false"
     />
@@ -72,12 +73,32 @@
       }"
       style="top: calc(50% - 4px);"
     >
+      <!-- Filtros de Categorias -->
       <div class="flex gap-2 flex-wrap mt-4">
+        <span class="w-full text-azul text-2xl font-bold">Categoria </span>
         <!-- Botões de filtros -->
         <button
-          v-for="(filter, index) in filters"
+          v-for="(filter, index) in categories"
           :key="index"
-          @click="toggleFilter(index)"
+          @click="toggleFilter('category', index), setActiveCategory(filter.label)"
+          :class="[
+            'px-4 py-2 rounded-full border text-sm',
+            filter.active ? 'bg-laranja text-azul border-black' : 'bg-gray-200 text-azul border-black',
+          ]"
+        >
+          {{ filter.label }}
+        </button>
+      </div>
+      <!-- Linha -->
+      <div class="h-[2px] w-full bg-laranja mt-4"></div>
+      <!-- Filtros de Locais -->
+      <div class="flex gap-2 flex-wrap mt-4">
+        <span class="w-full text-azul text-2xl font-bold">Local </span>
+        <!-- Botões de filtros -->
+        <button
+          v-for="(filter, index) in locations"
+          :key="index"
+          @click="toggleFilter('location',index), setActiveLocation(filter.label)"
           :class="[
             'px-4 py-2 rounded-full border text-sm',
             filter.active ? 'bg-laranja text-azul border-black' : 'bg-gray-200 text-azul border-black',
@@ -91,14 +112,25 @@
 </template>
 
 <script>
+import { filtersState, setSearchQuery, setActiveCategory, setActiveLocation } from "@/store/filters";
+
 export default {
   name: "SearchBar",
+
+  setup() {
+    return {
+      filtersState,
+      setSearchQuery,
+      setActiveCategory,
+      setActiveLocation,
+    };
+  },
+
   data() {
     return {
-      searchQuery: "",
       showFilters: false,
       isActive: false,
-      filters: [
+      categories: [
         { label: "Animais", active: false },
         { label: "Eletrônicos", active: false },
         { label: "Mochilas e Bolsas", active: false },
@@ -110,23 +142,68 @@ export default {
         { label: "Itens Pessoais", active: false },
         { label: "Outros", active: false },
       ],
+      locations: [
+        { label: "RU", active: false },
+        { label: "Biblioteca", active: false },
+        { label: "UED", active: false },
+        { label: "UAC", active: false },
+        { label: "LTDEA", active: false },
+        { label: "Centro Acadêmico", active: false },
+      ],
     };
   },
   computed: {
     isMediumOrLarger() {
       return window.innerWidth >= 768; // Breakpoint para telas médias ou maiores
     },
+    searchQueryWithoutAccents() {
+      return this.searchQuery
+        ? this.searchQuery.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        : "";
+    },
   },
   methods: {
+
     toggleActive() {
       this.isActive = !this.isActive;
     },
+
     toggleFilters() {
       this.showFilters = !this.showFilters;
     },
-    toggleFilter(index) {
-      this.filters[index].active = !this.filters[index].active;
-    },
+
+    toggleFilter(type, index) {
+    if (type === "category") {
+      this.categories.forEach((filter, i) => {
+        if (i === index) {
+          filter.active = !filter.active;
+        } else {
+          filter.active = false;
+        }
+      });
+    } else if (type === "location") {
+      this.locations.forEach((filter, i) => {
+        if (i === index) {
+          filter.active = !filter.active;
+        } else {
+          filter.active = false;
+        }
+      });
+    }
+  },
+
+  // handleSearch() {
+  //   const query = this.searchQuery;
+
+  //   const activeCategory = this.categories.find((filter) => filter.active);
+  //   const activeLocation = this.locations.find((filter) => filter.active);
+
+    
+  //   console.log("Pesquisa:", query);
+  //   console.log("Categoria selecionada:", activeCategory ? activeCategory.label : "Nenhuma");
+  //   console.log("Local selecionado:", activeLocation ? activeLocation.label : "Nenhum");
+  // },
+
   },
 };
 </script>

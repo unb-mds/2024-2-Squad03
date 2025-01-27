@@ -4,7 +4,7 @@
       <SearchHeader />
     </div>
 
-    <div class="pt-20 pb-8">
+    <div class="pt-24 pb-8">
       <SubMenu />
     </div>
 
@@ -18,7 +18,8 @@
         :location="item.location_name"
         :time="formatTime(item.created_at)"
         :image="item.image_urls[0] || NotAvailableImage"
-      />
+        :id="item.id"
+      ></ItemCard>
     </div>
 
     <div
@@ -51,10 +52,11 @@ import ItemCard from "../components/Item-Card.vue";
 import ButtonAdd from "../components/Button-Add-Found.vue";
 import SearchHeader from "../components/Search-Header.vue";
 import SubMenu from "../components/Sub-Menu-Found.vue";
-import { ref, onMounted } from 'vue';
-import { fetchFoundItems } from '@/services/item-api';
-import { formatTime } from '@/utils/dateUtils';
-import NotAvailableImage from '@/assets/images/not-available.png';
+import { ref, watch, onMounted } from "vue";
+import { fetchFoundItems } from "@/services/item-api";
+import { formatTime } from "@/utils/dateUtils";
+import NotAvailableImage from "@/assets/images/not-available.png";
+import { filtersState } from "@/store/filters";
 
 // Estado para os itens achados e controle de paginação
 const foundItems = ref([]);
@@ -63,7 +65,15 @@ const totalPages = ref(1);
 
 // Função para buscar itens achados com base na página
 const fetchItems = async (page = 1) => {
-  const response = await fetchFoundItems(page);
+  const { searchQuery, activeCategory, activeLocation } = filtersState;
+
+  const response = await fetchFoundItems({
+    page,
+    search: searchQuery,
+    category_name: activeCategory,
+    location_name: activeLocation,
+  });
+
   foundItems.value = response.results;
   totalPages.value = Math.ceil(response.count / 27); // 20 itens por página
 };
@@ -82,6 +92,18 @@ const goToNextPage = () => {
     fetchItems(currentPage.value);
   }
 };
+
+watch(
+  () => [
+    filtersState.searchQuery,
+    filtersState.activeCategory,
+    filtersState.activeLocation,
+  ],
+  () => {
+    currentPage.value = 1; // Reseta para a primeira página ao mudar os filtros
+    fetchItems(); // Atualiza os itens na tela
+  }
+);
 
 onMounted(() => fetchItems(currentPage.value));
 </script>

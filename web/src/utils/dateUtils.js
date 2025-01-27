@@ -8,9 +8,12 @@ export const formatTime = (createdAt) => {
     } else if (differenceInSeconds < 3600) {
       const minutes = Math.floor(differenceInSeconds / 60);
       return `Há ${minutes} minuto${minutes > 1 ? "s" : ""}`; 
-    } else {
+    } else if (differenceInSeconds < 86400){
       const hours = Math.floor(differenceInSeconds / 3600);
       return `Há ${hours} hora${hours > 1 ? "s" : ""}`;
+    } else {
+      const days = Math.floor(differenceInSeconds / 86400)
+      return `Há ${days} dia${days > 1 ? "s" : ""}`;
     }
   };
   

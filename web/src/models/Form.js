@@ -29,7 +29,6 @@ export default class FormModel {
       }
     }
 
-    console.log("Formulário criado:");
     return formData;
   }
 
