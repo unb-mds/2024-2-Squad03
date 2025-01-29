@@ -2,32 +2,32 @@
   <div>
     <!-- Header -->
     <div
-  class="h-[100px] bg-verde shadow-md rounded-b-xl flex items-center justify-between px-6 text-white relative"
->
-  <!-- Botão de voltar -->
-  <router-link to="/user" class="inline-block">
-    <img
-      src="../assets/icons/arrow-left-white.svg"
-      alt="Voltar"
-      class="w-[30px] h-[30px] text-white"
-    />
-  </router-link>
+      class="h-[100px] bg-verde shadow-md rounded-b-xl flex items-center justify-between px-6 text-white relative"
+    >
+      <!-- Botão de voltar -->
+      <router-link to="/user" class="inline-block">
+        <img
+          src="../assets/icons/arrow-left-white.svg"
+          alt="Voltar"
+          class="w-[30px] h-[30px] text-white"
+        />
+      </router-link>
 
-  <!-- Título -->
-  <h1
-    class="text-xl sm:text-2xl lg:text-4xl font-bold absolute left-1/2 transform -translate-x-1/2"
-  >
-    Meus Itens
-  </h1>
+      <!-- Título -->
+      <h1
+        class="text-xl sm:text-2xl lg:text-4xl font-bold absolute left-1/2 transform -translate-x-1/2"
+      >
+        Meus Itens
+      </h1>
 
-  <!-- Logo (Clicável para ir para /about) -->
-  <router-link to="/about" class="block">
-    <Logo 
-      customClass="text-white" 
-      :sizeClass="'text-1xl sm:text-3xl lg:text-4xl'" 
-    />
-  </router-link>
-</div>
+      <!-- Logo (Clicável para ir para /about) -->
+      <router-link to="/about" class="block">
+        <Logo
+          customClass="text-white"
+          :sizeClass="'text-1xl sm:text-3xl lg:text-4xl'"
+        />
+      </router-link>
+    </div>
 
     <!-- SubMenu -->
     <div class="pb-8">
@@ -77,7 +77,7 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { fetchMyItemsLost, deleteItem } from "@/services/apiItems";
+import { fetchMyItemsLost, deleteItem } from "@/services/item-api";
 import { formatTime } from "@/utils/dateUtils";
 import MainMenu from "../components/Main-Menu.vue";
 import SubMenu from "../components/Sub-Menu-UserLost.vue";
@@ -113,9 +113,7 @@ const confirmDelete = (itemId) => {
 const handleDelete = async (itemId) => {
   try {
     await deleteItem(itemId); // Chama o serviço para deletar o item no backend
-    myItemsLost.value = myItemsLost.value.filter(
-      (item) => item.id !== itemId
-    ); // Atualiza a lista removendo o item excluído
+    myItemsLost.value = myItemsLost.value.filter((item) => item.id !== itemId); // Atualiza a lista removendo o item excluído
     alertMessage.value = "Item deletado com sucesso.";
     formSubmitted.value = true;
   } catch (error) {

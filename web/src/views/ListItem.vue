@@ -73,10 +73,14 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import api from "../services/api"; // Importa o arquivo api.js
 import ItemHeader from "../components/Item-Header.vue";
 import MainMenu from "../components/Main-Menu.vue";
 import { useRoute, useRouter } from "vue-router";
+import { fetchOneItem } from "@/services/item-api";
+import { fetchOneLocation } from "@/services/location-api";
+import { fetchOneCategory } from "@/services/category-api";
+import { fetchOneColor } from "@/services/color-api";
+import { fetchOneBrand } from "@/services/brand-api";
 
 const item = ref(null);
 const itemStatus = ref("");
@@ -88,49 +92,40 @@ const idItem = route.query.idItem;
 
 async function fetchItem() {
   try {
-    // Busca o item pelo ID
-    const response = await api.get(`/items/${idItem}`); // Substitua "1" pelo ID dinâmico do item
-    item.value = response.data;
+    item.value = await fetchOneItem(idItem);
 
-    // Determina o status do item (achado ou perdido)
     itemStatus.value = item.value.status === "found" ? "found" : "lost";
 
-    // Busca o nome do local
     if (item.value.location) {
-      const locationResponse = await api.get(
-        `/locations/${item.value.location}`
-      );
-      locationName.value = locationResponse.data.name;
+      const locationResponse = await fetchOneLocation(item.value.location);
+      locationName.value = locationResponse.name;
     } else {
       locationName.value = "Não especificado";
     }
 
-    // Adiciona as labels dinamicamente
     labels.value = [];
 
-    // Categoria
     if (item.value.category) {
       const categoryIds = Array.isArray(item.value.category)
         ? item.value.category
         : [item.value.category];
       const categoryPromises = categoryIds.map((id) =>
-        api
-          .get(`/categories/${id}`)
-          .then((res) => ({ name: res.data.name, type: "category" }))
+        fetchOneCategory(id).then((res) => ({
+          name: res.name,
+          type: "category",
+        }))
       );
       const categories = await Promise.all(categoryPromises);
       labels.value.push(...categories);
     }
 
-    // Cor
     if (item.value.color) {
-      const colorResponse = await api.get(`/colors/${item.value.color}`);
+      const colorResponse = await fetchOneColor(item.value.color);
       labels.value.push({ name: colorResponse.data.name, type: "color" });
     }
 
-    // Marca
     if (item.value.brand) {
-      const brandResponse = await api.get(`/brands/${item.value.brand}`);
+      const brandResponse = await fetchOneBrand(item.value.brand);
       labels.value.push({ name: brandResponse.data.name, type: "brand" });
     }
   } catch (error) {
@@ -154,7 +149,6 @@ function navigateToChat() {
   }
 }
 
-// Carrega os dados do item e os detalhes relacionados quando o componente é montado
 onMounted(fetchItem);
 </script>
 

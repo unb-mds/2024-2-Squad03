@@ -1,6 +1,6 @@
 <template>
-  <div class="min-h-screen">
-    <div class="fixed w-full top-0">
+  <div class="min-h-screen pb-40">
+    <div class="fixed w-full top-0 z-[9999]">
       <SearchHeader />
     </div>
 
@@ -23,23 +23,43 @@
     </div>
 
     <div
-      class="flex w-full justify-start sm:justify-center gap-x-6 pb-[120px] px-10"
+      class="fixed bottom-32 left-1/2 transform -translate-x-1/2 flex gap-4 z-10"
     >
-      <img
-        src="../assets/icons/arrow-left.svg"
-        alt="Anterior"
-        class="w-[30px] h-[30px] cursor-pointer"
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="size-10 text-azul hover:text-laranja transition duration-200"
         @click="goToPreviousPage"
-      />
-      <img
-        src="../assets/icons/arrow-right.svg"
-        alt="Próximo"
-        class="w-[30px] h-[30px] cursor-pointer"
-        @click="goToNextPage"
-      />
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="m11.25 9-3 3m0 0 3 3m-3-3h7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+        />
+      </svg>
+
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="size-10 text-azul hover:text-laranja transition duration-200"
+        @click="goToPreviousPage"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="m12.75 15 3-3m0 0-3-3m3 3h-7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+        />
+      </svg>
     </div>
 
     <ButtonAdd />
+
     <div class="fixed bottom-0 w-full">
       <MainMenu activeIcon="search" />
     </div>
@@ -53,17 +73,15 @@ import ButtonAdd from "../components/Button-Add-Lost.vue";
 import SearchHeader from "../components/Search-Header.vue";
 import SubMenu from "../components/Sub-Menu-Lost.vue";
 import { ref, watch, onMounted } from "vue";
-import { fetchLostItems } from "@/services/apiItems";
+import { fetchLostItems } from "@/services/item-api";
 import { formatTime } from "@/utils/dateUtils";
 import NotAvailableImage from "@/assets/images/not-available.png";
 import { filtersState } from "@/store/filters";
 
-// Estado para os itens perdidos e controle de paginação
 const lostItems = ref([]);
 const currentPage = ref(1);
 const totalPages = ref(1);
 
-// Função para buscar itens perdidos com base na página
 const fetchItems = async (page = 1) => {
   const { searchQuery, activeCategory, activeLocation } = filtersState;
 
@@ -78,7 +96,6 @@ const fetchItems = async (page = 1) => {
   totalPages.value = Math.ceil(response.count / 27);
 };
 
-// Navegação de páginas
 const goToPreviousPage = () => {
   if (currentPage.value > 1) {
     currentPage.value -= 1;
@@ -100,8 +117,8 @@ watch(
     filtersState.activeLocation,
   ],
   () => {
-    currentPage.value = 1; // Reseta para a primeira página ao mudar os filtros
-    fetchItems(); // Atualiza os itens na tela
+    currentPage.value = 1;
+    fetchItems();
   }
 );
 

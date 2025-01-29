@@ -292,10 +292,13 @@
 </template>
 
 <script>
+import { fetchCategories } from "@/services/category-api";
 import Form from "../models/Form";
 import Item from "../models/Item";
-import Alert from "./Alert.vue";
-import api from "../services/api";
+import { fetchLocations } from "@/services/location-api";
+import { fetchColors } from "@/services/color-api";
+import { fetchBrands } from "@/services/brand-api";
+import { saveItem } from "@/services/item-api";
 
 export default {
   name: "FormComponent",
@@ -326,39 +329,19 @@ export default {
     },
 
     async initializeCategories() {
-      try {
-        const result = await api.get("/categories/");
-        this.categories = result.data.results;
-      } catch {
-        console.log("Erro ao carregar categorias");
-      }
+      this.categories = await fetchCategories();
     },
 
     async initializeLocations() {
-      try {
-        const result = await api.get("/locations/");
-        this.locations = result.data.results;
-      } catch {
-        console.log("Erro ao carregar locais");
-      }
+      this.locations = await fetchLocations();
     },
 
     async initializeColors() {
-      try {
-        const result = await api.get("/colors/");
-        this.colors = result.data.results;
-      } catch {
-        console.log("Erro ao carregar cores");
-      }
+      this.colors = await fetchColors();
     },
 
     async initializeBrands() {
-      try {
-        const result = await api.get("/brands/");
-        this.brands = result.data.results;
-      } catch {
-        console.log("Erro ao carregar marcas");
-      }
+      this.brands = await fetchBrands();
     },
 
     async save() {
@@ -379,11 +362,11 @@ export default {
 
       const formData = form.toFormData();
       try {
-        await api.post("/items/", formData);
+        await saveItem(formData);
         this.formSubmitted = true;
 
         setTimeout(() => {
-          window.location.replace(`http://localhost:8000/#/found`);
+          router.push({ name: "Found" });
         }, 1000);
       } catch (error) {
         this.alertMessage = "Erro ao publicar item.";

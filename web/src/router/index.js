@@ -10,7 +10,7 @@ import Chats from "../views/Chats.vue";
 import ListItem from "../views/ListItem.vue";
 import UserItemsLost from "../views/UserItems-Lost.vue";
 import UserItemsFound from "../views/UserItems-Found.vue";
-import api from "@/services/api";
+import api from "@/services/base-api";
 
 const routes = [
   {
