@@ -64,7 +64,7 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { fetchMyItemsFound, deleteItem } from "@/services/apiItems";
+import { fetchMyItemsFound, deleteItem } from "@/services/item-api";
 import { formatTime } from "@/utils/dateUtils";
 import MainMenu from "../components/Main-Menu.vue";
 import SubMenu from "../components/Sub-Menu-UserFound.vue";
