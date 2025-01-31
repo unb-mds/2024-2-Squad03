@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen">
+  <div class="min-h-screen pb-40">
     <div class="fixed w-full top-0 z-[9999]">
       <SearchHeader />
     </div>
@@ -23,7 +23,7 @@
     </div>
 
     <div
-      class="flex w-full h-full justify-start sm:justify-center items-end gap-x-6"
+      class="fixed bottom-32 left-1/2 transform -translate-x-1/2 flex gap-4 z-10"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -31,7 +31,7 @@
         viewBox="0 0 24 24"
         stroke-width="1.5"
         stroke="currentColor"
-        class="size-10 text-azul hover:text-laranja transition duration-200"
+        class="size-10 text-azul hover:text-laranja transition duration-200 cursor-pointer"
         @click="goToPreviousPage"
       >
         <path
@@ -47,7 +47,7 @@
         viewBox="0 0 24 24"
         stroke-width="1.5"
         stroke="currentColor"
-        class="size-10 text-azul hover:text-laranja transition duration-200"
+        class="size-10 text-azul hover:text-laranja transition duration-200 cursor-pointer"
         @click="goToPreviousPage"
       >
         <path
@@ -59,6 +59,7 @@
     </div>
 
     <ButtonAdd />
+
     <div class="fixed bottom-0 w-full">
       <MainMenu activeIcon="search" />
     </div>
