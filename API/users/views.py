@@ -64,24 +64,23 @@ class ItemViewSet(ModelViewSet):
 
     def get_queryset(self):
 
-        self.request.query_params.get("status", None)
+        status = None
         if "found" in self.request.path:
-            return (
-                Item.objects.filter(status="found")
-                .select_related("category", "location", "color", "brand")
-                .prefetch_related("images")
-            )
+            status = "found"
         elif "lost" in self.request.path:
-            return (
-                Item.objects.filter(status="lost")
-                .select_related("category", "location", "color", "brand")
-                .prefetch_related("images")
-            )
+            status = "lost"
 
-        # Retorna todos os itens caso nenhum endpoint específico seja usado
-        return Item.objects.select_related(
-            "category", "location", "color", "brand"
-        ).prefetch_related("images")
+        # Filtro inicial com status, se fornecido
+        queryset = Item.objects.all()
+        if status:
+            queryset = queryset.filter(status=status)
+
+        # Aplica seleções relacionadas e ordenação
+        return (
+            queryset.select_related("category", "location", "color", "brand")
+            .prefetch_related("images")
+            .order_by("-found_lost_date", "-created_at")
+        )
 
     def get_paginated_response(self, data):
         total_found = Item.objects.filter(status="found").count()

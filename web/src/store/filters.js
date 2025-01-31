@@ -7,16 +7,21 @@ export const filtersState = reactive({
 });
 
 export const setSearchQuery = (query) => {
-  console.log("Definindo searchQuery:", query);
   filtersState.searchQuery = query;
 };
 
 export const setActiveCategory = (category) => {
-  console.log("Definindo activeCategory:", category);
-  filtersState.activeCategory = category;
+  if (filtersState.activeCategory == category) {
+    filtersState.activeCategory = null;
+  } else {
+    filtersState.activeCategory = category;
+  }
 };
 
 export const setActiveLocation = (location) => {
-  console.log("Definindo activeLocation:", location);
-  filtersState.activeLocation = location;
+  if (filtersState.activeLocation == location) {
+    filtersState.activeLocation = null;
+  } else {
+    filtersState.activeLocation = location;
+  }
 };

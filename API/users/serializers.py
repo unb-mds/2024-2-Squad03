@@ -46,6 +46,7 @@ class ItemSerializer(serializers.ModelSerializer):
     )  # IDs das imagens a serem removidas
     image_urls = serializers.SerializerMethodField(read_only=True)
     image_ids = serializers.SerializerMethodField(read_only=True)
+    user_id = serializers.IntegerField(source="user.id", read_only=True)
     barcode = serializers.CharField(read_only=True)  # Código único do item
     category_name = serializers.SerializerMethodField()
     location_name = serializers.SerializerMethodField()
@@ -61,6 +62,7 @@ class ItemSerializer(serializers.ModelSerializer):
             "id",
             "barcode",
             "name",
+            "user_id",
             "description",
             "category",
             "category_name",

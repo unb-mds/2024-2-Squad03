@@ -1,6 +1,6 @@
 <template>
   <div
-    class="h-[100px] bg-verde shadow-md rounded-b-xl flex items-center justify-between px-6 text-white relative"
+    class="fixed w-full top-0 h-[100px] bg-verde shadow-md rounded-b-xl flex items-center justify-between px-6 text-white z-10"
   >
     <!-- Botão de voltar -->
     <router-link to="/user" class="inline-block">
@@ -12,27 +12,22 @@
     </router-link>
 
     <!-- Título -->
-    <h1
-      class="text-xl sm:text-2xl lg:text-4xl font-bold absolute left-1/2 transform -translate-x-1/2"
-    >
-      Meus Itens
-    </h1>
+    <h1 class="text-2xl font-bold text-center flex-1">Meus Itens</h1>
 
     <!-- Logo (Clicável para ir para /about) -->
-    <router-link to="/about" class="block">
-      <Logo
-        customClass="text-white"
-        :sizeClass="'text-1xl sm:text-3xl lg:text-4xl'"
-      />
-    </router-link>
+    <button>
+      <router-link to="/about" class="no-underline text-white"
+        ><Logo class="pr-4" sizeClass="text-2xl"
+      /></router-link>
+    </button>
   </div>
 
-  <div class="pb-8">
+  <div class="pb-8 pt-24">
     <SubMenu />
   </div>
 
   <div
-    class="grid grid-cols-[repeat(auto-fit,_minmax(180px,_1fr))] sm:grid-cols-[repeat(auto-fit,_minmax(200px,_1fr))] justify-items-center align-items-center lg:px-3 gap-y-3 pb-10"
+    class="grid grid-cols-[repeat(auto-fit,_minmax(180px,_1fr))] sm:grid-cols-[repeat(auto-fit,_minmax(200px,_1fr))] justify-items-center align-items-center lg:px-3 gap-y-3 pb-24"
   >
     <ItemCard
       v-for="item in myItemsFound"
@@ -69,7 +64,7 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { fetchMyItemsFound, deleteItem } from "@/services/item-api";
+import { fetchMyItemsFound, deleteItem } from "@/services/apiItems";
 import { formatTime } from "@/utils/dateUtils";
 import MainMenu from "../components/Main-Menu.vue";
 import SubMenu from "../components/Sub-Menu-UserFound.vue";

@@ -7,6 +7,7 @@ class UserProfile(models.Model):
     profile_picture = models.URLField(
         null=True, blank=True
     )  # Campo para salvar a URL da imagem
+    welcome_email_sent = models.BooleanField(default=False)
 
 
 class Category(models.Model):

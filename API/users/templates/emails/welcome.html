@@ -2,26 +2,132 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Bem-vindo ao AcheiUnB</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bem-vindo(a) ao AcheiUnB</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f0f0f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .header {
+            background-color: #008940;
+            color: white;
+            padding: 20px;
+            border-radius: 12px 12px 0 0;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .intro {
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .welcome-section {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid #1a237e;
+            margin-bottom: 20px;
+        }
+
+        .welcome-section h2 {
+            font-size: 20px;
+            color: #666;
+            margin-top: 0;
+        }
+
+        .welcome-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .welcome-section ul li {
+            margin-bottom: 10px;
+            color: #1a237e;
+            font-size: 14px;
+        }
+
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .link-button {
+            display: inline-block;
+            background-color: #1a237e;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        .link-button:hover {
+            background-color: #666;
+        }
+
+        .support {
+            background-color: #fff3cd;
+            color: #F59E0B;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Bem-vindo ao AcheiUnB, {{ name }}!</h1>
-    <p>
-        Estamos felizes por você estar aqui! O AcheiUnB foi criado para ajudar
-        estudantes a encontrar e recuperar itens perdidos de forma rápida e organizada.
-    </p>
-    <h2>Como começar?</h2>
-    <ul>
-        <li><strong>Cadastrar itens:</strong> Adicione informações sobre os itens perdidos ou encontrados.</li>
-        <li><strong>Buscar itens:</strong> Use a barra de pesquisa para procurar itens na plataforma.</li>
-        <li><strong>Entrar em contato:</strong> Converse com outros usuários diretamente pela plataforma.</li>
-    </ul>
-    <p>
-        Caso tenha dúvidas ou sugestões, não hesite em nos contatar.
-    </p>
-    <p>
-        Boa sorte e conte com a gente!<br>
-        Equipe AcheiUnB
-    </p>
+    <div class="header">
+        <h1>Seja bem-vindo(a) ao AcheiUnB, {{ name }}!</h1>
+    </div>
+
+    <div class="intro">
+        <p>Estamos muito felizes por ter você aqui! O <strong>AcheiUnB</strong> é o lugar ideal para ajudar os estudantes da UnB a encontrar e recuperar itens perdidos de forma rápida, organizada e segura.</p>
+    </div>
+
+    <div class="welcome-section">
+        <h2>Como funciona?</h2>
+        <ul>
+            <li><strong>Login:</strong> A autenticação é feita pela Microsoft, logo, somente discentes dentro do domínio da UnB podem utilizar o site.</li>
+            <li><strong>Cadastrar itens:</strong> O usuário é capaz de adicionar informações sobre itens perdidos ou encontrados preenchendo os campos destinados.</li>
+            <li><strong>Buscar itens:</strong> É possível usar a nossa barra de pesquisa para encontrar o que foi perdido ou para devolver o que foi encontrado.</li>
+            <li><strong>Conectar com outros:</strong> Os usuários são capazes de conversar diretamente uns com os outros pelo nosso chat integrado.</li>
+            <li><strong>Ver meus itens:</strong> O estudante pode visualizar seus itens postados, tanto perdidos, quanto encontrados.</li>
+            <li><strong>Denunciar:</strong> Denúncias são possíveis de serem feitas pelo site, onde o usuário é direcionado ao envio de um email para a nossa equipe.</li>
+        </ul>
+    </div>
+
+    <div class="support">
+        <p>Se precisar de ajuda, <strong>nossa equipe está sempre à disposição</strong>! Não hesite em entrar em contato.</p>
+    </div>
+
+<div class="footer" style="text-align: center;">
+    <p>Acesse agora o AcheiUnB e aproveite!</p>
+    <a href="https://acheiunb.com.br" style="color: white;" class="link-button">Acessar AcheiUnB</a>
+    <div style="display: flex; justify-content: center; align-items: center; gap: 0.25rem; margin-top: 20px;">
+        <h1 style="margin: 0; color: black; font-family: Arial, sans-serif;">
+            <span style="font-style: italic; font-size: 2rem;">Achei</span>
+        </h1>
+        <h1 style="margin: 0; color: black; font-family: Arial, sans-serif;">
+            <span style="font-weight: bold; font-size: 2rem;">UnB</span>
+        </h1>
+    </div>
+</div>
+
 </body>
 </html>
