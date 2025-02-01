@@ -2,7 +2,9 @@ import os
 from datetime import timedelta
 
 import cloudinary.uploader
+from asgiref.sync import async_to_sync
 from celery import shared_task
+from channels.layers import get_channel_layer
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
@@ -28,6 +30,7 @@ def send_match_notification(to_email, item_name, matches):
         [to_email],
         html_message=html_message,
     )
+
 
 @shared_task
 def send_welcome_email(user_email, user_name):
@@ -80,6 +83,8 @@ def upload_images_to_cloudinary(object_id, images, object_type="item"):
     except ObjectDoesNotExist:
         return
 
+    upload_images = []
+
     for image_content in images:
         try:
             upload_result = cloudinary.uploader.upload(image_content)
@@ -93,7 +98,11 @@ def upload_images_to_cloudinary(object_id, images, object_type="item"):
                 obj.save()
         except Exception as e:
             print(f"Erro ao fazer upload de imagem para o objeto {object_id}: {e}")
-
+    channel_layer = get_channel_layer()
+    async_to_sync(channel_layer.group_send)(
+        f"item_{object_id}",
+        {"type": "upload_completed", "images": upload_images},
+    )
     # try:
     #     item = Item.objects.get(id=item_id)
     # except Item.DoesNotExist:
