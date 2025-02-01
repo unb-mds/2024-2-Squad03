@@ -29,6 +29,7 @@ def send_match_notification(to_email, item_name, matches):
         html_message=html_message,
     )
 
+
 @shared_task
 def send_welcome_email(user_email, user_name):
     """Task assíncrona para enviar o e-mail de boas-vindas."""

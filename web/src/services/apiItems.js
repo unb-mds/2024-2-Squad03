@@ -1,10 +1,15 @@
-import axios from 'axios';
-import { filtersState } from '@/store/filters';
+import axios from "axios";
+import { filtersState } from "@/store/filters";
 
-const API_BASE_URL = 'http://localhost:8000/api/items';
+const API_BASE_URL = "http://localhost:8000/api/items";
 
 // Função para buscar itens perdidos com filtros opcionais
-export const fetchLostItems = async ({ page = 1, search = "", category_name = "", location_name = "" }) => {
+export const fetchLostItems = async ({
+  page = 1,
+  search = "",
+  category_name = "",
+  location_name = "",
+}) => {
   const params = {
     page,
     ...(filtersState.searchQuery && { search: filtersState.searchQuery }),
@@ -17,7 +22,12 @@ export const fetchLostItems = async ({ page = 1, search = "", category_name = ""
 };
 
 // Função para buscar itens encontrados com filtros opcionais
-export const fetchFoundItems = async ({ page = 1, search = "", category_name = "", location_name = "" }) => {
+export const fetchFoundItems = async ({
+  page = 1,
+  search = "",
+  category_name = "",
+  location_name = "",
+}) => {
   const params = {
     page,
     ...(filtersState.searchQuery && { search: filtersState.searchQuery }),
@@ -53,7 +63,7 @@ export const deleteItem = async (itemId) => {
   try {
     await axios.delete(`${API_BASE_URL}/${itemId}/`);
   } catch (error) {
-    console.error('Erro ao deletar o item:', error);
+    console.error("Erro ao deletar o item:", error);
     throw error;
   }
 };

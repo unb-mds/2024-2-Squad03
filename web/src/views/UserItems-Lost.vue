@@ -2,31 +2,27 @@
   <div>
     <!-- Header -->
     <div
-  class="fixed w-full top-0 h-[100px] bg-verde shadow-md rounded-b-xl flex items-center justify-between px-6 text-white z-10"
->
-  <!-- Botão de voltar -->
-  <router-link to="/user" class="inline-block">
-    <img
-      src="../assets/icons/arrow-left-white.svg"
-      alt="Voltar"
-      class="w-[30px] h-[30px] text-white"
-    />
-  </router-link>
+      class="fixed w-full top-0 h-[100px] bg-verde shadow-md rounded-b-xl flex items-center justify-between px-6 text-white z-10"
+    >
+      <!-- Botão de voltar -->
+      <router-link to="/user" class="inline-block">
+        <img
+          src="../assets/icons/arrow-left-white.svg"
+          alt="Voltar"
+          class="w-[30px] h-[30px] text-white"
+        />
+      </router-link>
 
-  <!-- Título -->
-  <h1
-    class="text-2xl font-bold text-center flex-1"
-  >
-    Meus Itens
-  </h1>
+      <!-- Título -->
+      <h1 class="text-2xl font-bold text-center flex-1">Meus Itens</h1>
 
-  <!-- Logo (Clicável para ir para /about) -->
-  <button>
-      <router-link to="/about" class="no-underline text-white"
-        ><Logo class="pr-4" sizeClass="text-2xl"
-      /></router-link>
-    </button>
-</div>
+      <!-- Logo (Clicável para ir para /about) -->
+      <button>
+        <router-link to="/about" class="no-underline text-white"
+          ><Logo class="pr-4" sizeClass="text-2xl"
+        /></router-link>
+      </button>
+    </div>
 
     <!-- SubMenu -->
     <div class="pb-8 pt-24">
@@ -59,12 +55,7 @@
     </div>
 
     <!-- Alertas -->
-    <Alert
-      v-if="submitError"
-      type="error"
-      :message="alertMessage"
-      @closed="submitError = false"
-    />
+    <Alert v-if="submitError" type="error" :message="alertMessage" @closed="submitError = false" />
     <Alert
       v-if="formSubmitted"
       type="success"
@@ -112,9 +103,7 @@ const confirmDelete = (itemId) => {
 const handleDelete = async (itemId) => {
   try {
     await deleteItem(itemId); // Chama o serviço para deletar o item no backend
-    myItemsLost.value = myItemsLost.value.filter(
-      (item) => item.id !== itemId
-    ); // Atualiza a lista removendo o item excluído
+    myItemsLost.value = myItemsLost.value.filter((item) => item.id !== itemId); // Atualiza a lista removendo o item excluído
     alertMessage.value = "Item deletado com sucesso.";
     formSubmitted.value = true;
   } catch (error) {

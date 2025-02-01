@@ -17,10 +17,13 @@ const participant_2 = ref(route.query.participant_2);
 const item_id = ref(route.query.item_id);
 
 // Atualiza o chat caso a URL mude
-watch(() => route.params.chatroomId, (newId) => {
-  chatId.value = newId;
-  fetchChat();
-});
+watch(
+  () => route.params.chatroomId,
+  (newId) => {
+    chatId.value = newId;
+    fetchChat();
+  },
+);
 
 // Buscar usuário logado
 const fetchCurrentUser = async () => {
@@ -29,7 +32,7 @@ const fetchCurrentUser = async () => {
     currentUser.value = {
       id: response.data.id,
       name: response.data.nome,
-      profile_picture: response.data.foto || "https://via.placeholder.com/40"
+      profile_picture: response.data.foto || "https://via.placeholder.com/40",
     };
   } catch (error) {
     console.error("Erro ao buscar usuário logado:", error);
@@ -43,7 +46,7 @@ const fetchChatUser = async (userId) => {
     return {
       id: response.data.id,
       name: response.data.nome,
-      profile_picture: response.data.foto || "https://via.placeholder.com/40"
+      profile_picture: response.data.foto || "https://via.placeholder.com/40",
     };
   } catch (error) {
     console.error("Erro ao buscar usuário do chat:", error);
@@ -65,9 +68,10 @@ const fetchChat = async () => {
     console.log("✅ Dados do chat recebidos:", response.data);
 
     // Definir o usuário com quem está conversando
-    const otherUserId = response.data.participant_1 === currentUser.value.id
-      ? response.data.participant_2
-      : response.data.participant_1;
+    const otherUserId =
+      response.data.participant_1 === currentUser.value.id
+        ? response.data.participant_2
+        : response.data.participant_1;
 
     chatUser.value = await fetchChatUser(otherUserId); // Busca os dados do outro usuário
 
@@ -89,7 +93,7 @@ const createChat = async () => {
     const response = await api.post("/chat/chatrooms/", {
       participant_1: currentUser.value.id,
       participant_2: participant_2.value,
-      item_id: item_id.value
+      item_id: item_id.value,
     });
 
     chatId.value = response.data.id; // Atualiza o ID do chat
@@ -112,7 +116,7 @@ const sendMessage = async (text) => {
     console.log(`💬 Enviando mensagem para chatroom ${chatId.value}...`);
     const response = await api.post("/chat/messages/", {
       room: chatId.value,
-      content: text
+      content: text,
     });
 
     messages.value.push(response.data);

@@ -22,9 +22,7 @@
       />
     </div>
 
-    <div
-      class="flex w-full justify-start sm:justify-center gap-x-6 pb-[120px] px-10"
-    >
+    <div class="flex w-full justify-start sm:justify-center gap-x-6 pb-[120px] px-10">
       <img
         src="../assets/icons/arrow-left.svg"
         alt="Anterior"
@@ -94,15 +92,11 @@ const goToNextPage = () => {
 };
 
 watch(
-  () => [
-    filtersState.searchQuery,
-    filtersState.activeCategory,
-    filtersState.activeLocation,
-  ],
+  () => [filtersState.searchQuery, filtersState.activeCategory, filtersState.activeLocation],
   () => {
     currentPage.value = 1; // Reseta para a primeira página ao mudar os filtros
     fetchItems(); // Atualiza os itens na tela
-  }
+  },
 );
 
 onMounted(() => fetchItems(currentPage.value));

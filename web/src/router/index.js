@@ -12,7 +12,6 @@ import UserItemsLost from "../views/UserItems-Lost.vue";
 import UserItemsFound from "../views/UserItems-Found.vue";
 import Message from "../views/Message.vue";
 
-
 const routes = [
   {
     path: "/",

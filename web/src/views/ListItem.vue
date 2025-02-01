@@ -7,8 +7,11 @@
   <!-- Conteúdo principal -->
   <div class="px-6 py-[120px] flex flex-col items-center gap-6" v-if="item">
     <!-- Imagem do Item -->
-    <img :src="item.image" alt="Imagem do Item"
-      class="w-full max-w-md h-64 md:h-80 object-cover rounded-lg" />
+    <img
+      :src="item.image"
+      alt="Imagem do Item"
+      class="w-full max-w-md h-64 md:h-80 object-cover rounded-lg"
+    />
 
     <!-- Título, local e tags -->
     <div class="text-center">
@@ -20,18 +23,25 @@
 
       <!-- Labels dinâmicas -->
       <div class="flex flex-wrap gap-2 justify-center mt-2">
-        <span v-for="(label, index) in labels" :key="index"
-          :class="label.type === 'category'
-            ? 'bg-blue-500'
-            : label.type === 'brand'
-              ? 'bg-laranja'
-              : 'bg-gray-500'"
-          class="px-4 py-2 rounded-full text-sm font-medium text-white">
-          {{ label.type === "category"
-            ? "Categoria: "
-            : label.type === "brand"
-              ? "Marca: "
-              : "Cor: " }}{{ label.name }}
+        <span
+          v-for="(label, index) in labels"
+          :key="index"
+          :class="
+            label.type === 'category'
+              ? 'bg-blue-500'
+              : label.type === 'brand'
+                ? 'bg-laranja'
+                : 'bg-gray-500'
+          "
+          class="px-4 py-2 rounded-full text-sm font-medium text-white"
+        >
+          {{
+            label.type === "category"
+              ? "Categoria: "
+              : label.type === "brand"
+                ? "Marca: "
+                : "Cor: "
+          }}{{ label.name }}
         </span>
       </div>
     </div>
@@ -42,8 +52,10 @@
     </p>
 
     <!-- Botão para iniciar o chat -->
-    <button class="w-full md:w-1/3 py-3 text-center text-white font-semibold rounded-lg bg-laranja hover:bg-laranja active:bg-laranja focus:ring-2 focus:ring-laranja"
-      @click="startChat">
+    <button
+      class="w-full md:w-1/3 py-3 text-center text-white font-semibold rounded-lg bg-laranja hover:bg-laranja active:bg-laranja focus:ring-2 focus:ring-laranja"
+      @click="startChat"
+    >
       {{ itemStatus === "found" ? "É meu item" : "Este item é meu" }}
     </button>
   </div>
@@ -114,9 +126,7 @@ async function fetchItem() {
         ? item.value.category
         : [item.value.category];
       const categoryPromises = categoryIds.map((id) =>
-        api
-          .get(`/categories/${id}`)
-          .then((res) => ({ name: res.data.name, type: "category" }))
+        api.get(`/categories/${id}`).then((res) => ({ name: res.data.name, type: "category" })),
       );
       const categories = await Promise.all(categoryPromises);
       labels.value.push(...categories);
@@ -159,7 +169,7 @@ async function startChat() {
     }
 
     console.log(
-      `🛠 Criando chatroom entre usuário ${currentUser.value.id} e ${participant_2.value}...`
+      `🛠 Criando chatroom entre usuário ${currentUser.value.id} e ${participant_2.value}...`,
     );
     const chatResponse = await api.post("/chat/chatrooms/", {
       participant_1: currentUser.value.id,
@@ -184,4 +194,3 @@ onMounted(async () => {
 </script>
 
 <style scoped></style>
-
