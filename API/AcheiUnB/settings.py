@@ -87,10 +87,20 @@ ASGI_APPLICATION = "AcheiUnB.asgi.application"
 
 CHANNEL_LAYERS = {
     "default": {
-        "BACKEND": "channels.layers.channels_redis",  # Para desenvolvimento local
-        # "BACKEND": "channels.layers.InMemoryChannelLayer",
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("redis", 6379)],
+        },
     },
 }
+
+
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND": "channels.layers.channels_redis",  # Para desenvolvimento local
+#         # "BACKEND": "channels.layers.InMemoryChannelLayer",
+#     },
+# }
 
 TEMPLATES = [
     {

@@ -59,6 +59,7 @@ services:
       - CLOUDINARY_CLOUD_NAME=${CLOUDINARY_CLOUD_NAME}
       - CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY}
       - CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET}
+      - CHANNEL_LAYERS_BACKEND=channels_redis.core.RedisChannelLayer 
 
   celery-beat:
     build:
