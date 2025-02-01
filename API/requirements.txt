@@ -13,6 +13,8 @@ djangorestframework
 django-extensions
 djangorestframework-simplejwt
 channels
+channels-redis
+daphne
 django-cors-headers==4.6.0
 drf-yasg
 msal
